@@ -9,14 +9,13 @@
   <meta name="author" content="SitePoint">
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
+  <!-- Materialize CSS and JS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
           
+  <!-- Datatable CSS and JS -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
-
-
-
 </head>
 
 <body>
@@ -28,29 +27,32 @@
   
   <script>
     $(document).ready(function(){
-      fetch('http://localhost:8080/getTrains')
-      .then(response => response.json())
-        .then(trains => {
-          var table = $("#train")
-          table.append(`<thead><tr>
-             <th>Train Number </th>
-             <th>Train Name</th>
-             <th>Train Starts</th>
-             <th>Train Ends</th></tr></thead><tbody>`)
+      async function getTrains() {
+        const res = await fetch("http://localhost:8080/getTrains")
+        const trains = await res.json()
+        return trains
+      }
+      res = getTrains()
+      var table = $("#train")
+      table.append(`<thead><tr>
+       <th>Train Number </th>
+       <th>Train Name</th>
+       <th>Train Starts</th>
+       <th>Train Ends</th></tr></thead><tbody>`)
 
-          trains.forEach(train => {
-            table.append(`<tr>
-              <td>${train.TrainNo}</td>
-              <td>${train.TrainName}</td>
-              <td>${train.TrainStarts}</td>
-              <td>${train.TrainEnds}</td>
-              </tr>`)
-          });
-          table.append(`</tbody>`)
-          $('#train').dataTable();
-          
+      res.then(allTrains => {
+        allTrains.forEach(train => {
+          table.append(`<tr>
+           <td>${train.TrainNo}</td>
+           <td>${train.TrainName}</td>
+           <td>${train.TrainStarts}</td>
+           <td>${train.TrainEnds}</td>
+           </tr>`)
         });
-        });
+        table.append(`</tbody>`)
+       $('#train').dataTable();
+      });
+    });
 
   </script>
 
