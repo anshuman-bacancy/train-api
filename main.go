@@ -1,18 +1,17 @@
 package main
 
 import (
-  "os"
   "log"
+  "flag"
   "net/http"
 
-  "trains/routes"
+  "trains/controller"
   "trains/models"
-  "trains/data"
   "trains/database"
 )
 
 func main() {
-  trainRecords := data.IRCTCdata()
+  trainRecords := database.IRCTCdata()
   var allTrains []models.Train
 
   // parse train data into struct
@@ -27,16 +26,25 @@ func main() {
     allTrains = append(allTrains, train)
   }
 
+  bulkinsert := flag.Bool("bulkinsert", false, "")
+  flag.Parse()
+
+  var port string
+  if len(flag.Args()) == 1 {
+    port = string(":" + flag.Args()[0])
+  } else {
+    port = ":8000"
+  }
+
   database.InitServer()
-  //database.BulkInsert(allTrains)
+  if *bulkinsert {
+	  database.BulkInsert(allTrains)
+  }
 
-  //routes
-  http.HandleFunc("/getTrains", routes.GetTrainsHandler)
-
-  port := string(":" + os.Args[1])
+  //handling routes
+  http.HandleFunc("/getTrains", controller.GetTrainsHandler)
 
   log.Println("Server started at", port)
-  // file server for images
   fs := http.StripPrefix("/static/", http.FileServer(http.Dir("./static")))
   http.Handle("/static/", fs)
 

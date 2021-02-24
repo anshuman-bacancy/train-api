@@ -1,4 +1,4 @@
-package routes
+package controller
 
 import (
   "fmt"
@@ -23,5 +23,3 @@ func GetTrainsHandler(res http.ResponseWriter, req *http.Request) {
   fmt.Println(string(allTrains))
   res.Write(allTrains)
 }
-
-
