@@ -1,6 +1,8 @@
 package database
 
 import (
+  "fmt"
+  "time"
   "context"
 
   "trains/models"
@@ -25,7 +27,21 @@ func InitServer() {
 
 func BulkInsert(trains []models.Train) {
   collection := Client.Database(DbName).Collection(CollectionName)
+
+  chSize := 10
+  ch := make(chan bool, chSize)
+
+  now := time.Now()
   for _, train := range trains {
-    _, _ = collection.InsertOne(context.TODO(), train)
+    ch <- true
+    go func(train *models.Train) {
+      _, _ = collection.InsertOne(context.TODO(), train)
+    <-ch
+    }(&train)
+  }
+  fmt.Println(time.Since(now))
+
+  for x := 0; x < chSize; x++ {
+    ch <- true
   }
 }

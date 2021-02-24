@@ -17,7 +17,6 @@ func main() {
   // parse train data into struct
   for _, data := range trainRecords[1:] {
     var train models.Train
-
     train.TrainNo = data[1]
     train.TrainName = data[2]
     train.TrainStarts = data[3]
