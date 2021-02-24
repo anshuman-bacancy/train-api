@@ -39,7 +39,7 @@ func BulkInsert(trains []models.Train) {
     <-ch
     }(&train)
   }
-  fmt.Println(time.Since(now))
+  fmt.Println("Time elapsed.. ", time.Since(now))
 
   for x := 0; x < chSize; x++ {
     ch <- true

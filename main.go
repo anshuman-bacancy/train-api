@@ -6,38 +6,25 @@ import (
   "net/http"
 
   "trains/controller"
-  "trains/models"
   "trains/database"
 )
 
 func main() {
-  trainRecords := database.IRCTCdata()
-  var allTrains []models.Train
+  database.InitServer()
 
-  // parse train data into struct
-  for _, data := range trainRecords[1:] {
-    var train models.Train
-    train.TrainNo = data[1]
-    train.TrainName = data[2]
-    train.TrainStarts = data[3]
-    train.TrainEnds = data[4]
-
-    allTrains = append(allTrains, train)
-  }
-
-  bulkinsert := flag.Bool("bulkinsert", false, "")
+  processcsv := flag.Bool("processcsv", false, "")
   flag.Parse()
+
+  if *processcsv {
+    allTrains := database.IRCTCdata()
+    database.BulkInsert(allTrains)
+  }
 
   var port string
   if len(flag.Args()) == 1 {
     port = string(":" + flag.Args()[0])
   } else {
     port = ":8000"
-  }
-
-  database.InitServer()
-  if *bulkinsert {
-	  database.BulkInsert(allTrains)
   }
 
   //handling routes
