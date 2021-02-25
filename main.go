@@ -5,12 +5,17 @@ import (
   "flag"
   "net/http"
 
-  "trains/controller"
   "trains/database"
+  "trains/controller"
 )
 
+
 func main() {
-  database.InitServer()
+  initErr := database.InitServer()
+  if initErr != nil {
+    log.Fatal(initErr)
+    panic(initErr)
+  }
 
   processcsv := flag.Bool("processcsv", false, "")
   flag.Parse()

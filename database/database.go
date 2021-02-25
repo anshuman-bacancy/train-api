@@ -1,6 +1,7 @@
 package database
 
 import (
+  "log"
   "fmt"
   "time"
   "context"
@@ -12,21 +13,32 @@ import (
   "go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var clientOps *options.ClientOptions
-var Client *mongo.Client
-var err error
-var DbConnURI = "mongodb://localhost:27017"
-var DbName = "IRCTC"
-var CollectionName = "Trains"
+var (
+  clientOps *options.ClientOptions
+  Client *mongo.Client
+  clientErr error
+  config utils.Config
+  configErr error
+  insertErr error
+)
 
-func InitServer() {
-  clientOps = options.Client().ApplyURI(DbConnURI)
-  Client, err = mongo.Connect(context.TODO(), clientOps)
-  utils.CheckError(err)
+
+func init() {
+  config, configErr = utils.LoadConfig(".")
+  if configErr != nil {
+    log.Fatal(configErr)
+    panic(configErr)
+  }
 }
 
-func BulkInsert(trains []models.Train) {
-  collection := Client.Database(DbName).Collection(CollectionName)
+func InitServer() error {
+  clientOps = options.Client().ApplyURI(config.ConnString)
+  Client, clientErr = mongo.Connect(context.TODO(), clientOps)
+  return clientErr
+}
+
+func BulkInsert(trains []models.Train) error {
+  collection := Client.Database(config.DbName).Collection(config.Collection)
 
   chSize := 10
   ch := make(chan bool, chSize)
@@ -35,7 +47,7 @@ func BulkInsert(trains []models.Train) {
   for _, train := range trains {
     ch <- true
     go func(train *models.Train) {
-      _, _ = collection.InsertOne(context.TODO(), train)
+      _, insertErr = collection.InsertOne(context.TODO(), train)
     <-ch
     }(&train)
   }
@@ -44,4 +56,5 @@ func BulkInsert(trains []models.Train) {
   for x := 0; x < chSize; x++ {
     ch <- true
   }
+  return insertErr
 }

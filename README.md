@@ -9,7 +9,7 @@
 	-processcsv=false
 		doesn't processes the csv
 	8080
-		default port is 8000
+		default port is 8080
 
 	# Enter the URL 
 	http://localhost:8080/static
