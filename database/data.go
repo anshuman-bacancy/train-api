@@ -1,31 +1,39 @@
 package database
 
 import (
-  "os"
-  "encoding/csv"
+	"encoding/csv"
+	"os"
 
 	"trains/models"
-  "trains/utils"
+	"trains/utils"
 )
 
-var FileName = "All_Indian_Trains.csv" 
+var fileName = "rail-data.csv"
 
-// Reads csv and parses into []models.Train
+// IRCTCdata reads csv and parses into []models.Train
 func IRCTCdata() []models.Train {
-  trainData, err := os.Open(FileName)
-  utils.CheckError(err)
-  csvReader := csv.NewReader(trainData)
-  trainRecords, _ := csvReader.ReadAll()
+	trainData, err := os.Open(fileName)
+	utils.CheckError(err)
+	csvReader := csv.NewReader(trainData)
+	trainRecords, _ := csvReader.ReadAll()
 
 	var allTrains []models.Train
 
-	for _, trainRecord := range trainRecords[1:] {
+	for _, trainRecord := range trainRecords {
 		var train models.Train
 
-		train.TrainNo = trainRecord[1]
-		train.TrainName = trainRecord[2]
-		train.TrainStarts = trainRecord[3]
-		train.TrainEnds = trainRecord[4]
+		train.TrainNo = trainRecord[0]
+		train.TrainName = trainRecord[1]
+		train.SEQ = trainRecord[2]
+		train.Code = trainRecord[3]
+		train.StName = trainRecord[4]
+		train.ATime = trainRecord[5]
+		train.DTime = trainRecord[6]
+		train.Distance = trainRecord[7]
+		train.SS = trainRecord[8]
+		train.SSname = trainRecord[9]
+		train.Ds = trainRecord[10]
+		train.DsName = trainRecord[11]
 
 		allTrains = append(allTrains, train)
 	}
