@@ -14,4 +14,5 @@ type Train struct {
 	SSname    string `json:"ssname"`
 	Ds        string `json:"ds"`
 	DsName    string `json:"dsName"`
+	TimeDiff  int
 }

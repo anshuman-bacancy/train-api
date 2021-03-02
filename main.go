@@ -33,6 +33,7 @@ func main() {
 
 	//handling routes
 	http.HandleFunc("/getTrains", controller.GetTrainsHandler)
+	http.HandleFunc("/getTrainsFilter", controller.GetTrainsFilterHandler)
 
 	log.Println("Server started at", port)
 	fs := http.StripPrefix("/static/", http.FileServer(http.Dir("./static")))

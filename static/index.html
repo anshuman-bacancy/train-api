@@ -37,16 +37,32 @@
       table.append(`<thead><tr>
        <th>Train Number </th>
        <th>Train Name</th>
-       <th>Train Starts</th>
-       <th>Train Ends</th></tr></thead><tbody>`)
+       <th>SEQ</th>
+       <th>Station Code</th>
+       <th>Station Name</th>
+       <th>Arrival Time</th>
+       <th>Departure Time</th>
+       <th>Distance</th>
+       <th>Source Station Code</th>
+       <th>Source Station Name</th>
+       <th>Destination Station Code</th>
+       <th>Destination Station Name</th></tr></thead><tbody>`)
 
       res.then(allTrains => {
         allTrains.forEach(train => {
           table.append(`<tr>
-           <td>${train.TrainNo}</td>
-           <td>${train.TrainName}</td>
-           <td>${train.TrainStarts}</td>
-           <td>${train.TrainEnds}</td>
+           <td>${train.trainNo}</td>
+           <td>${train.trainName}</td>
+           <td>${train.seq}</td>
+           <td>${train.code}</td>
+           <td>${train.stname}</td>
+           <td>${train.atime}</td>
+           <td>${train.dtime}</td>
+           <td>${train.distance}</td>
+           <td>${train.ss}</td>
+           <td>${train.ssname}</td>
+           <td>${train.ds}</td>
+           <td>${train.dsname}</td>
            </tr>`)
         });
         table.append(`</tbody>`)
