@@ -1,7 +1,7 @@
 ### Usage
-	# run program: go run main.go <processcsv, port>
+	# run program: **go run main.go <processcsv, port>**
 	-processcsv=true
-		processes the csv
+		processes the csv*
 	-processcsv=false
 		doesn't processes the csv
 	8080
