@@ -13,3 +13,8 @@
 
 	# Enter the URL 
 	http://localhost:8080/static
+	http://localhost:8080/getTrainsFilter?src=RJT&dst=BRC
+
+**NOTE**
+
+Works with postman
