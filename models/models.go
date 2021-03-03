@@ -1,5 +1,12 @@
 package models
 
+// Config model
+type Config struct {
+	ConnString string `mapstructure:"CONNECTION_STRING"`
+	DbName     string `mapstructure:"DATABASE_NAME"`
+	Collection string `mapstructure:"COLLECTION"`
+}
+
 // Train model
 type Train struct {
 	TrainNo   string `json:"trainNo"`

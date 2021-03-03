@@ -2,10 +2,10 @@ package database
 
 import (
 	"encoding/csv"
+	"log"
 	"os"
 
 	"trains/models"
-	"trains/utils"
 )
 
 var fileName = "rail-data.csv"
@@ -13,7 +13,9 @@ var fileName = "rail-data.csv"
 // IRCTCdata reads csv and parses into []models.Train
 func IRCTCdata() []models.Train {
 	trainData, err := os.Open(fileName)
-	utils.CheckError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 	csvReader := csv.NewReader(trainData)
 	trainRecords, _ := csvReader.ReadAll()
 
