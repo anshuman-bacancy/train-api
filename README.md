@@ -1,7 +1,3 @@
-### Train data:
-#### https://www.kaggle.com/ravibhalala217/indiantrain
-
-
 ### Usage
 	# run program: go run main.go <processcsv, port>
 	-processcsv=true
