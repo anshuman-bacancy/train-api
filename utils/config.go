@@ -1,14 +1,13 @@
 package utils
 
-import "github.com/spf13/viper"
+import (
+	"trains/models"
 
-type Config struct {
-	ConnString string `mapstructure:"CONNECTION_STRING"`
-	DbName string `mapstructure:"DATABASE_NAME"`
-	Collection string `mapstructure:"COLLECTION"`
-}
+	"github.com/spf13/viper"
+)
 
-func LoadConfig(path string) (config Config, configErr error) {
+// LoadConfig loads config from .env file
+func LoadConfig(path string) (config models.Config, configErr error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
