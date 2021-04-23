@@ -28,7 +28,7 @@
   <script>
     $(document).ready(function(){
       async function getTrains() {
-        const res = await fetch("http://localhost:8080/getTrains")
+        const res = await fetch("http://localhost:8000/getTrains")
         const trains = await res.json()
         return trains
       }
@@ -55,26 +55,22 @@
            <td>${train.trainName}</td>
            <td>${train.seq}</td>
            <td>${train.code}</td>
-           <td>${train.stname}</td>
+           <td>${train.stName}</td>
            <td>${train.atime}</td>
            <td>${train.dtime}</td>
            <td>${train.distance}</td>
            <td>${train.ss}</td>
            <td>${train.ssname}</td>
            <td>${train.ds}</td>
-           <td>${train.dsname}</td>
+           <td>${train.dsName}</td>
            </tr>`)
         });
         table.append(`</tbody>`)
-       $('#train').dataTable();
+				table.dataTable()
       });
     });
-
   </script>
 
 
 </body>
 </html>
-
-
-
